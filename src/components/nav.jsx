@@ -10,8 +10,8 @@ const Nav = () => {
         { to: '/fleurs', label: 'Fleurs' },
         { to: '/moncompte', label: 'Mon Compte' },
       ];
-
-  return (
+ 
+  return ( 
     <nav className="navbar navbar-expand-lg navbar-dark fixed-top" style={{ backgroundColor: '#507c7c', opacity: 0.8 }}>
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">bnxam's shop</Link>
