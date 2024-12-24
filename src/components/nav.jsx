@@ -1,5 +1,5 @@
+// src/components/Navbar.js
 import React from 'react';
-// react dom nha c a installer 
 import { Link } from 'react-router-dom';
 
 const Nav = () => {
@@ -10,9 +10,9 @@ const Nav = () => {
         { to: '/fleurs', label: 'Fleurs' },
         { to: '/moncompte', label: 'Mon Compte' },
       ];
- 
-  return ( 
-    <nav className="navbar navbar-expand-lg navbar-dark fixed-top" style={{ backgroundColor: '#507c7c', opacity: 0.8 }}>
+
+  return (
+    <nav className="navbar navbar-expand-lg navbar-dark fixed-top" style={{ backgroundColor: '#AA336A', opacity: 0.8 }}>
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">bnxam's shop</Link>
         <div className="collapse navbar-collapse" id="navbarNav">
