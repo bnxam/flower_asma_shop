@@ -26,7 +26,7 @@ const MonCompte = () => {
               required
             />
           </div>
-          <button type="submit" className="btn btn-primary w-100">Connexion</button>
+          <button type="submit" className="btn btn-danger w-100">Connexion</button>
         </form>
       </div>
     </div>

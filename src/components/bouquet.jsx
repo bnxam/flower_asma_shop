@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Bouquet = ({ bouquet }) => {
+const Bouquet = ({ bouquet ,toggleLike}) => {
   return (
     <div className="card">
       <img src={bouquet.image} className="card-img-top" alt={bouquet.nom} />
@@ -9,9 +9,14 @@ const Bouquet = ({ bouquet }) => {
         <p className="card-text">{bouquet.descr}</p>
         <p className="card-text">
           <strong>Prix : </strong>
-          {bouquet.prix.toFixed(2)} DA
+          {bouquet.prix} DA
         </p>
-        <button className="btn btn-primary">Acheter</button>
+        <button
+          className={`btn btn-light`}
+          onClick={() => toggleLike(bouquet.id)}
+        >
+          {bouquet.liked ? '❤️' : '🤍'}
+        </button>
       </div>
     </div>
   );

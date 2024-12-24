@@ -14,6 +14,7 @@ const App = () => {
       descr: 'Un dosage parfait de jasmins et de tulipes, des couleurs éclatantes et du soleil toute l’année chez vous',
       image: '/assets/b1.jpg',
       prix: 1500.00,
+      liked: false,
     },
     {
       id: 2,
@@ -21,6 +22,7 @@ const App = () => {
       descr: 'Un mélange merveilleux de jasmins et de senteurs méditerranéennes, des odeurs éclatantes pour égayer votre bureau',
       image: '/assets/b2.jpg',
       prix: 2000.00,
+      liked: false,
     },
     {
       id: 3,
@@ -28,13 +30,14 @@ const App = () => {
       descr: 'Un mélange merveilleux de roses et de lys, des odeurs et des couleurs',
       image: '/assets/b3.jpg',
       prix: 2000.00,
+      liked: false,
     },
   ];
   const mesFleurs = [
     {
       id: 1,
       nom: ' Rose',
-      descr: 'Symbole de lamour et de la passion, avec des couleurs variées pour chaque émotion.',
+      descr: 'Symbole de passion, avec des couleurs variées pour chaque émotion.',
       image: '/assets/f1.jpg',
       prix: 90.00,
     },
@@ -80,7 +83,7 @@ const App = () => {
       <Nav/>
       <div className="container mt-4">
         <Routes>
-          <Route path="/bouquets" element={<Bouquets bouquets={mesBouquets} />} />
+          <Route path="/bouquets" element={<Bouquets initialBouquets={mesBouquets} />} />
           <Route path="/home" element={<Home />} />
           <Route path="/fleurs" element={<Fleurs fleurs={mesFleurs} />} />
           <Route path="/moncompte" element={<MonCompte />} />
