@@ -1,38 +1,15 @@
-import React from 'react';
+
+import React, { useState , useEffect } from 'react';
 import Bouquets from './pages/bouquets';  // Import du composant Bouquets
 import Fleurs from './pages/fleurs';  // Import du composant Bouquets
 import Home from './pages/home';  // Import du composant Bouquets
 import MonCompte from './pages/moncompte';  // Import du composant Bouquets
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Nav from './components/nav';
+import FetchBouquets from "./components/fetchBouquets";
 
 const App = () => {
-  const mesBouquets = [
-    {
-      id: 1,
-      nom: 'Bouquet de Tunis',
-      descr: 'Un dosage parfait de jasmins et de tulipes, des couleurs éclatantes et du soleil toute l’année chez vous',
-      image: '/assets/b1.jpg',
-      prix: 1500.00,
-      liked: false,
-    },
-    {
-      id: 2,
-      nom: 'Bouquet d’Alger',
-      descr: 'Un mélange merveilleux de jasmins et de senteurs méditerranéennes, des odeurs éclatantes pour égayer votre bureau',
-      image: '/assets/b2.jpg',
-      prix: 2000.00,
-      liked: false,
-    },
-    {
-      id: 3,
-      nom: 'Bouquet d’Oran',
-      descr: 'Un mélange merveilleux de roses et de lys, des odeurs et des couleurs',
-      image: '/assets/b3.jpg',
-      prix: 2000.00,
-      liked: false,
-    },
-  ];
+
   const mesFleurs = [
     {
       id: 1,
@@ -77,13 +54,16 @@ const App = () => {
       prix: 100.00,
     },
   ];
+
+  const [bouquets, setBouquets] = useState([]);
   return (
 
     <Router>
-      <Nav/>
+      <Nav />
+      <FetchBouquets setBouquets={setBouquets} />
       <div className="container mt-4">
         <Routes>
-          <Route path="/bouquets" element={<Bouquets initialBouquets={mesBouquets} />} />
+          <Route path="/bouquets" element={<Bouquets bouquets={bouquets} setBouquets={setBouquets} />} />
           <Route path="/home" element={<Home />} />
           <Route path="/fleurs" element={<Fleurs fleurs={mesFleurs} />} />
           <Route path="/moncompte" element={<MonCompte />} />
