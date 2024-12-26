@@ -37,6 +37,29 @@ app.get('/api/bouquets', (req, res) => {
     res.json(mesBouquets); // Renvoie les bouquets sous forme de JSON
 });
 
+app.use(express.json());
+
+app.post('/like', (req, res) => {
+    const bouquetId = req.query.id; // Récupérer l'ID du bouquet depuis l'URL
+    const { liked } = req.body;  // Récupérer l'état du like depuis le body
+
+    if (!bouquetId) {
+        return res.status(400).json({ error: 'ID du bouquet manquant' });
+    }
+
+    // Simuler une mise à jour du bouquet
+    const bouquet = mesBouquets.find(b => b.id == bouquetId);
+    if (bouquet) {
+        bouquet.liked = liked; // Mettre à jour l'état "liked" du bouquet
+        console.log(`Bouquet avec ID ${bouquetId} a été ${liked ? 'liké' : 'déliké'}`);
+        res.status(200).json({ message: 'Like enregistré avec succès', bouquetId, liked });
+    } else {
+        return res.status(404).json({ error: 'Bouquet non trouvé' });
+    }
+});
+
+
+
 // Lancer le serveur
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
