@@ -1,3 +1,7 @@
+// ici le fetch verifie si les bouquet existe dans le localStorage sinon il metera ce qu'il ya dans le express 
+
+// now that i added the slice this part is no longer in use 
+
 import { useEffect } from "react";
 
 const FetchBouquets = ({ setBouquets }) => {

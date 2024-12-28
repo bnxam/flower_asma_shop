@@ -1,12 +1,10 @@
 
-import React, { useState , useEffect } from 'react';
 import Bouquets from './pages/bouquets';  // Import du composant Bouquets
 import Fleurs from './pages/fleurs';  // Import du composant Bouquets
 import Home from './pages/home';  // Import du composant Bouquets
 import MonCompte from './pages/moncompte';  // Import du composant Bouquets
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Nav from './components/nav';
-import FetchBouquets from "./components/fetchBouquets";
 
 const App = () => {
 
@@ -55,15 +53,13 @@ const App = () => {
     },
   ];
 
-  const [bouquets, setBouquets] = useState([]);
   return (
 
     <Router>
       <Nav />
-      <FetchBouquets setBouquets={setBouquets} />
       <div className="container mt-4">
         <Routes>
-          <Route path="/bouquets" element={<Bouquets bouquets={bouquets} setBouquets={setBouquets} />} />
+          <Route path="/bouquets" element={<Bouquets />} />
           <Route path="/home" element={<Home />} />
           <Route path="/fleurs" element={<Fleurs fleurs={mesFleurs} />} />
           <Route path="/moncompte" element={<MonCompte />} />

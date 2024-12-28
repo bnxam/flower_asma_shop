@@ -17,6 +17,9 @@ const Bouquet = ({ bouquet ,toggleLike}) => {
         >
           {bouquet.liked ? '❤️' : '🤍'}
         </button>
+        {/* <button className={`btn btn-danger`} 
+        onClick={() => handleAddToCart(bouquet.id)}
+        >Ajouter au panier</button> */}
       </div>
     </div>
   );
