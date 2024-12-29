@@ -2,8 +2,10 @@ const port = 5000; // Vous pouvez changer ce port si nécessaire
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const seedDatabase = require("./models/seed");
+const sequelize = require("./models/config");
 
-app.use(cors());    
+app.use(cors({ origin: "http://localhost:5173" }));   
 const mesBouquets = [
     {
         id: 1,
@@ -73,6 +75,16 @@ app.post('/api/acheter', (req, res) => {
 
     res.status(200).json({ message: 'Achat effectué avec succès !' });
 });
+
+(async () => {
+    try {
+      await sequelize.authenticate();
+      console.log("Database connected!");
+      await seedDatabase();
+    } catch (error) {
+      console.error("Unable to connect to the database:", error);
+    }
+  })();
 
 // Lancer le serveur
 app.listen(port, () => {
