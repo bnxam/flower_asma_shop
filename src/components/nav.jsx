@@ -9,6 +9,8 @@ const Nav = () => {
         { to: '/bouquets', label: 'Bouquets' },
         { to: '/fleurs', label: 'Fleurs' },
         { to: '/moncompte', label: 'Mon Compte' },
+        { to: '/panier', label: 'Panier' },
+
       ];
 
   return (

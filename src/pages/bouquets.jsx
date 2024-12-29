@@ -2,13 +2,16 @@ import Bouquet from '../components/bouquet';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { likeBouquet, unlikeBouquet } from '../redux/slice/bouquetSlice';
+import { addToCart } from '../redux/slice/cartSlice';
 
 const Bouquets = () => {
     const dispatch = useDispatch();
     const userId = 1; // ID utilisateur actuel
     const bouquets = useSelector((state) => state.bouquets.bouquets);
     // const cart = useSelector((state) => state.bouquets.cart);
-       
+    const handleAddToCart = (bouquet) => {
+        dispatch(addToCart(bouquet)); // Ajouter le bouquet au panier
+    };
     const toggleLike = async (id) => {
 
         const bouquet = bouquets.find((b) => b.id === id);
@@ -49,7 +52,8 @@ const Bouquets = () => {
         <div className="row">
             {bouquets.map((bouquet) => (
                 <div className="col-md-4 " key={bouquet.id}>
-                    <Bouquet bouquet={bouquet} toggleLike={toggleLike}  />
+                    <Bouquet bouquet={bouquet} toggleLike={toggleLike} 
+                    addToCart={() => handleAddToCart(bouquet)} />
                 </div>
             ))}
         </div>

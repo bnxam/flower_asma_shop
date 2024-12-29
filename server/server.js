@@ -58,7 +58,21 @@ app.post('/like', (req, res) => {
     }
 });
 
+// Middleware pour analyser le corps de la requête en JSON
+app.use(express.json());
 
+app.post('/api/acheter', (req, res) => {
+    console.log('Requête reçue à /api/acheter :', req.body);
+
+    const { userId, purchaseData } = req.body;
+
+    if (!userId || !purchaseData || purchaseData.length === 0) {
+        console.error('Données invalides reçues :', req.body);
+        return res.status(400).json({ error: 'Données d\'achat manquantes ou invalides.' });
+    }
+
+    res.status(200).json({ message: 'Achat effectué avec succès !' });
+});
 
 // Lancer le serveur
 app.listen(port, () => {

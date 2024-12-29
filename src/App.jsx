@@ -3,6 +3,7 @@ import Bouquets from './pages/bouquets';  // Import du composant Bouquets
 import Fleurs from './pages/fleurs';  // Import du composant Bouquets
 import Home from './pages/home';  // Import du composant Bouquets
 import MonCompte from './pages/moncompte';  // Import du composant Bouquets
+import Cart from './pages/cart';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Nav from './components/nav';
 
@@ -64,6 +65,7 @@ const App = () => {
           <Route path="/fleurs" element={<Fleurs fleurs={mesFleurs} />} />
           <Route path="/moncompte" element={<MonCompte />} />
           <Route path="/" element={<Home />} />
+          <Route path="/panier" element={<Cart />} />
         </Routes>
       </div>
     </Router>
