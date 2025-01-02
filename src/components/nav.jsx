@@ -2,14 +2,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Nav = () => {
+const Nav = ({ userInfo }) => {
 
     const menuItems = [
         { to: '/home', label: 'Accueil' },
         { to: '/bouquets', label: 'Bouquets' },
         { to: '/fleurs', label: 'Fleurs' },
-        { to: '/moncompte', label: 'Mon Compte' },
-        { to: '/panier', label: 'Panier' },
+        { to: '/moncompte', label: userInfo.isAuthentificated ? userInfo.whoIsAuthentificated : 'Mon compte' },
+        { to: '/panier', label: userInfo.isAuthentificated ? 'Panier' : '' },
 
       ];
 

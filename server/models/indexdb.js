@@ -33,4 +33,4 @@ Achat.belongsTo(User);
 Achat.belongsToMany(Bouquet, { through: 'AchatBouquets' });
 Bouquet.belongsToMany(Achat, { through: 'AchatBouquets' });
 
-module.exports = { Bouquet, Fleur, User, BouquetFleur, Achat };
+module.exports = { Bouquet, Fleur, User, BouquetFleur, Achat  };

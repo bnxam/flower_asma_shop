@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Bouquet = ({ bouquet, toggleLike ,addToCart}) => {
+const Bouquet = ({ bouquet, toggleLike, addToCart, userInfo }) => {
 
 
     return (
@@ -15,14 +15,22 @@ const Bouquet = ({ bouquet, toggleLike ,addToCart}) => {
                 </p>
                 <div className='row'>
                     <button
-                        className={`btn btn-light col-6`}
+                        className={`btn btn-light col-4 ${!userInfo.isAuthentificated ? 'disabled-button' : ''} ${!userInfo.isAuthentificated ? 'disabled' : ''}`}
                         onClick={() => toggleLike(bouquet.id)}
                     >
-                        {bouquet.liked ? '❤️' : '🤍'}
+                        {userInfo.isAuthentificated ? (bouquet.liked ? '❤️' : '🤍') : '🤍'}
                     </button>
-                    <button className={`btn btn-danger col-6`}
-                         onClick={addToCart}
-                    >Ajouter au panier</button>
+                    {userInfo.isAuthentificated && (
+                        <button className={`btn btn-light col-4 `}
+                       
+                    >{ bouquet.nblikes }</button>
+                    )}
+                    {userInfo.isAuthentificated && (
+                        <button className={`btn btn-danger col-4 `}
+                        onClick={addToCart}
+                    >panier</button>
+                    )}
+                    
                 </div>
             </div>
         </div>

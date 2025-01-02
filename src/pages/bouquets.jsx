@@ -1,59 +1,44 @@
 import Bouquet from '../components/bouquet';
-import React from 'react';
+import { React, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { likeBouquet, unlikeBouquet } from '../redux/slice/bouquetSlice';
+import { likeBouquet, setBouquet } from '../redux/slice/bouquetSlice';
 import { addToCart } from '../redux/slice/cartSlice';
+import { sendRequest } from '../utils/req';
 
-const Bouquets = () => {
+const Bouquets = ({userInfo}) => {
     const dispatch = useDispatch();
-    const userId = 1; // ID utilisateur actuel
+    const userId = 1; 
     const bouquets = useSelector((state) => state.bouquets.bouquets);
-    // const cart = useSelector((state) => state.bouquets.cart);
     const handleAddToCart = (bouquet) => {
         dispatch(addToCart(bouquet)); // Ajouter le bouquet au panier
     };
     const toggleLike = async (id) => {
 
-        const bouquet = bouquets.find((b) => b.id === id);
-        if (!bouquet) return;
+        // const bouquet = bouquets.find((b) => b.id === id);
+        dispatch(likeBouquet({ id, userId }));
 
-        // Dispatch Redux actions
-        if (bouquet.liked) {
-            dispatch(unlikeBouquet({ id, userId }));
-        } else {
-            dispatch(likeBouquet({ id, userId }));
-        }
-       
-        
-        try {
-            const response = await fetch(`http://localhost:5000/like?id=${id}`, {
-                method: 'POST', // Use POST method to send the like
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    liked: !bouquet.liked, // Send the updated liked status
-                }),
-            });
-
-            if (!response.ok) {
-                throw new Error("Error while sending like to the backend");
-            }
-            console.log("Like sent to the backend");
-        } catch (error) {
-            console.error("Error:", error);
-        }
     };
-    
-    
+
+    useEffect(() => {
+        const fetchBouquets = async () => {
+            try {
+                const bouquetData = await sendRequest('http://localhost:5000/api/bouquets', 'GET');
+                dispatch(setBouquet(bouquetData));
+            } catch (error) {
+                console.error('Erreur lors de la récupération des bouquets:', error);
+            }
+        };
+        fetchBouquets();
+    }, [dispatch]);
+
 
 
     return (
         <div className="row">
             {bouquets.map((bouquet) => (
                 <div className="col-md-4 " key={bouquet.id}>
-                    <Bouquet bouquet={bouquet} toggleLike={toggleLike} 
-                    addToCart={() => handleAddToCart(bouquet)} />
+                    <Bouquet bouquet={bouquet} toggleLike={toggleLike}
+                        addToCart={() => handleAddToCart(bouquet)} userInfo = {userInfo} />
                 </div>
             ))}
         </div>
