@@ -5,11 +5,73 @@ const cors = require('cors');
 const seedDatabase = require("./models/seed");
 const sequelize = require("./models/config");
 const { Bouquet, Fleur, User } = require('./models/indexdb');
+const jwt = require('jsonwebtoken');
 
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 app.use(express.json());
 
 app.use(cors({ origin: "http://localhost:5173" }));
+
+
+// const SECRET_KEY = process.env.JWT_SECRET_KEY;
+const SECRET_KEY = '123';
+
+// app.post('/login', (req, res) => {
+//     const { username, password } = req.body;
+
+//     // Check if user exists and password matches
+//     const user = User.find(u => u.nomUser === username && u.password === password);
+
+//     if (!user) {
+//         return res.status(401).json({ message: 'Invalid credentials' }); // Invalid login
+//     }
+
+//     // Generate a JWT token
+//     const token = jwt.sign({ id: user.id, username: user.nomUser }, secretKey, { expiresIn: '1h' });
+
+//     res.json({ token }); // Send token to the client
+// });
+
+// app.post('/login', (req, res) => {
+//     const user = req.body; // Exemples de données utilisateur
+//     const token = jwt.sign(user, secretKey, { expiresIn: '1h' }); // Générer un token
+//     res.json({ token });
+// });
+
+// app.get('/protected', (req, res) => {
+//     const token = req.headers['authorization']?.split(' ')[1];
+//     if (!token) return res.status(403).send('Token requis.');
+
+//     jwt.verify(token, secretKey, (err, decoded) => {
+//         if (err) return res.status(401).send('Token invalide.');
+//         res.send('Accès autorisé.');
+//     });
+// });
+// app.get('/protected', (req, res) => {
+//     // Récupérer le token depuis l'en-tête Authorization
+//     const token = req.headers['authorization']?.split(' ')[1];
+
+//     if (!token) {
+//         // Si aucun token n'est fourni
+//         return res.status(403).send('Token requis.');
+//     }
+
+//     // Vérifier le token
+//     jwt.verify(token, secretKey, (err, decoded) => {
+//         if (err) {
+//             // Si le token est invalide ou expiré
+//             return res.status(401).send('Token invalide.');
+//         }
+
+//         // Si tout va bien, on peut utiliser les données décodées
+//         console.log(decoded); // Exemple : { id: 123, username: 'JohnDoe', iat: 1673039392, exp: 1673042992 }
+//         res.send('Accès autorisé.');
+//     });
+// });
+
 
 app.get("/api/bouquets", async (req, res) => {
     try {
@@ -21,15 +83,76 @@ app.get("/api/bouquets", async (req, res) => {
     }
 });
 
-app.get("/api/users", async (req, res) => {
-    try {
-        const users = await User.findAll();
-        const usersData = users.map((user) => user.get({ plain: true }));
-        res.json(usersData);
-    } catch (error) {
-        res.status(500).json({ error: "Erreur lors de la récupération des bouquets" });
+app.post("/login", async (req, res) => {
+    const { username, password } = req.body;
+    const user = await User.findOne({
+        where: {
+            nomUser: username,
+            password: password,
+        },
+    });
+
+    if (user) {
+        const token = jwt.sign(
+            { sub: user.nomUser, password: user.password },
+            SECRET_KEY,
+            { expiresIn: '1h' }  // Expiration dans 1 heure
+        );
+
+        res.json({ token });
+    } else {
+        // If no user is found, return an error
+        res.status(401).json({ message: "Invalid login or password" });
     }
+
 });
+
+const authenticateJWT = (req, res, next) => {
+    const token = req.header('Authorization')?.split(' ')[1];
+
+    if (!token) {
+        return res.status(403).send('Access denied');
+    }
+
+    jwt.verify(token, SECRET_KEY, (err, user) => {
+        if (err) {
+            const message = err.name === 'TokenExpiredError' ? 'Token expired' : 'Invalid token';
+            return res.status(403).send(message);
+        }
+        req.user = user;
+        next();
+    });
+};
+
+// Route protégée (nécessite un token valide)
+app.get('/protected', authenticateJWT, (req, res) => {
+    res.send(`Hello ${req.user.nomUser}, you have access to this protected route.`);
+});
+
+// app.post("/api/users", async (req, res) => {
+//     const { username, password } = req.body;
+//     try {
+//         // Find a user that matches the given login and password
+//         const user = await User.findOne({
+//             where: {
+//                 nomUser : username,
+//                 password: password,
+//             },
+//         });
+
+// if (user) {
+//     // If a user is found, return success
+//     res.json(user);
+// } else {
+//     // If no user is found, return an error
+//     res.status(401).json({ message: "Invalid login or password" });
+// }
+//     } catch (error) {
+//         // Handle errors (e.g., database issues)
+//         console.error("Error authenticating user:", error);
+//         res.status(500).json({ message: "Internal server error" });
+//     }
+// });
 
 app.put('/api/likes', async (req, res) => {
     try {
