@@ -34,6 +34,7 @@ const MonCompte = () => {
   
 
   const handleSubmit = async (e) => {
+    // it Stops reloading the form (handles form via js)
     e.preventDefault();
     try {
       const result = await dispatch(login({ username, password })).unwrap();
